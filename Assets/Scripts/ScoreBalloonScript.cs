@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreBalloonScript : MonoBehaviour {
+public class ScoreBalloonScript : ParentBallonScript {
 
 	private int thisScore;
-	private const int scoreTimeMod = 20;
+	private const int scoreTimeMod = 2;
 
 
-	public void pop(bool shot)
+	public override void pop(bool shot)
 	{
 		if (shot) 
 		{
@@ -22,22 +22,12 @@ public class ScoreBalloonScript : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () 
+	protected override void Start () 
 	{
-		
-		thisScore = Mathf.FloorToInt( Random.Range (1.0f, 1.5f) * (100 + (scoreTimeMod * Time.time)) ); // total score has a base value of 100, plus an amount based on time and then a random variation for up to 50%
-	}
+		base.Start ();
 
-	void Update()
-	{
-		
-	}
+		thisScore = Mathf.FloorToInt( Random.Range (1.0f, 1.25f) * (100 + (scoreTimeMod * Time.time)) ); // total score has a base value of 100, plus an amount based on time and then a random variation for up to 50%
 
-	void OnMouseOver()
-	{
-		if (Input.GetMouseButtonDown (0)) 
-		{
-			pop (true);
-		}
+		GetComponentInChildren<TextMesh> ().text = thisScore.ToString();
 	}
 }

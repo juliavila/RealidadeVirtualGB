@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class ParentBallonScript : MonoBehaviour {
 
-	public float speed = 20.0f; // speed of ascent
-	public float angle = 0.0f; // angle to give a more natural movement, in degrees
+	protected float speed = 2.0f; // speed of ascent
+	protected float angle = 0.0f; // angle to give a more natural movement, in degrees
 
-	public void pop(bool shot)
+	public virtual void pop(bool shot)
 	{
 		if (shot) 
 		{
-			
+			Debug.Log ("nao");
 		} 
 		else 
 		{
@@ -20,7 +20,7 @@ public class ParentBallonScript : MonoBehaviour {
 		Destroy (gameObject);
 	}
 
-	void Start () 
+	protected virtual void Start () 
 	{
 		GetComponent<Rigidbody> ().useGravity = false;
 		GetComponent<Rigidbody> ().interpolation = RigidbodyInterpolation.Interpolate;
@@ -28,9 +28,11 @@ public class ParentBallonScript : MonoBehaviour {
 		GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
 
 		tag = "Balloon";
+
+		angle = Random.value * 360.0f;
 	}
 
-	void Update () 
+	protected virtual void Update () 
 	{
 		Rigidbody controller = GetComponent<Rigidbody>();
 
@@ -39,7 +41,7 @@ public class ParentBallonScript : MonoBehaviour {
 		Vector3 movement = Vector3.up;
 		angle += Random.value * 2.0f; // increases angle based on a random number
 		movement.x = Mathf.Cos (angle*Mathf.Deg2Rad); // convert to radians
-		movement *= (speed*Time.deltaTime); // adjust with time
+		movement *= (speed*Time.fixedDeltaTime); // adjust with time
 
 		controller.MovePosition (position + movement);
 	}
